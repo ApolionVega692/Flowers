@@ -1,0 +1,149 @@
+/* ==========================================================================
+   GLOBAL VARIABLES & RESET
+   ========================================================================== */
+:root {
+    --bg-color: #0d0e12; 
+    --text-color: #fdfdfd;
+    --text-muted: #8a8d93;
+    --font-heading: 'Syne', sans-serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+::-webkit-scrollbar { display: none; }
+html, body { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Lenis Boilerplate */
+html.lenis { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+.lenis.lenis-scrolling iframe { pointer-events: none; }
+
+* { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+
+body {
+    background-color: var(--bg-color); color: var(--text-color);
+    font-family: var(--font-body); overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+.container { max-width: 1400px; margin: 0 auto; padding: 0 5vw; }
+
+/* ==========================================================================
+   CUSTOM CURSOR
+   ========================================================================== */
+.cursor { position: fixed; width: 6px; height: 6px; background: var(--text-color); border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%); z-index: 9999; transition: opacity 0.2s ease; }
+.cursor-follower { position: fixed; width: 44px; height: 44px; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%); z-index: 9998; transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease; }
+@media (max-width: 768px) { * { cursor: auto !important; } .cursor, .cursor-follower { display: none; } }
+
+/* ==========================================================================
+   NAVIGATION
+   ========================================================================== */
+.nav-bar {
+    position: fixed; top: 0; left: 0; width: 100%; padding: 2rem 5vw; 
+    display: flex; justify-content: space-between; align-items: center; z-index: 100;
+    background: linear-gradient(to bottom, rgba(13, 14, 18, 0.9) 0%, rgba(13, 14, 18, 0) 100%);
+}
+.logo { font-family: var(--font-heading); font-weight: 700; font-size: 1.25rem; color: var(--text-color); text-decoration: none; letter-spacing: -0.5px; }
+.nav-links { display: flex; gap: 3rem; }
+.nav-links a { color: var(--text-color); text-decoration: none; font-size: 0.95rem; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+
+/* ==========================================================================
+   BIO SECTION (Flex Layout Morphing)
+   ========================================================================== */
+.bio-section { padding-top: 15vh; padding-bottom: 10vh; }
+.bio-flex { display: flex; gap: 6vw; }
+
+.bio-left { width: 50%; transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
+.bio-right { width: 50%; position: relative; transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
+
+/* Shrunk states triggered dynamically via JS */
+.bio-flex.is-shrunk .bio-left { width: 65%; } 
+.bio-flex.is-shrunk .bio-right { width: 35%; } 
+
+/* Sticky Portrait Container */
+.portrait-sticky { position: sticky; top: 15vh; height: 75vh; width: 100%; }
+.portrait-wrapper { width: 100%; height: 100%; border-radius: 12px; overflow: hidden; transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), filter 1.2s ease; }
+.bio-flex.is-shrunk .portrait-wrapper { transform: scale(0.95); filter: brightness(0.6); }
+.portrait-img { width: 100%; height: 120%; object-fit: cover; object-position: center; }
+
+.scroll-indicator {
+    position: absolute; bottom: 2rem; right: -2rem; 
+    display: flex; flex-direction: column; align-items: center; 
+    mix-blend-mode: difference; transition: opacity 0.5s ease;
+}
+.bio-flex.is-shrunk .scroll-indicator { opacity: 0; }
+.indicator-line { width: 2px; height: 60px; background: rgba(255, 255, 255, 0.2); position: relative; overflow: hidden; }
+.indicator-line::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 50%; background: var(--text-color); animation: dropScroll 2s infinite cubic-bezier(0.65, 0, 0.35, 1); }
+@keyframes dropScroll { 0% { transform: translateY(-100%); } 100% { transform: translateY(200%); } }
+
+/* Sequential Content Typography */
+.bio-step { min-height: 80vh; display: flex; flex-direction: column; justify-content: center; padding-bottom: 5vh; }
+.eyebrow { font-size: 1rem; text-transform: uppercase; letter-spacing: 3px; color: var(--text-muted); margin-bottom: 1rem; display: block; }
+.bio-step h1 { font-family: var(--font-heading); font-size: clamp(3.5rem, 6vw, 6rem); line-height: 1; margin-bottom: 2rem; }
+.bio-step p { font-size: 1.25rem; color: var(--text-muted); line-height: 1.6; max-width: 600px; }
+.bio-step h2 { font-family: var(--font-heading); font-size: 3rem; margin-bottom: 3rem; }
+
+/* Skills Section */
+.skill-category { margin-bottom: 3rem; }
+.skill-category h3 { font-family: var(--font-heading); font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-color); }
+.skill-category p { font-size: 1rem; margin-bottom: 1.5rem; max-width: 90%; }
+.skill-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+.skill-tags span { padding: 8px 16px; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 40px; font-size: 0.9rem; letter-spacing: 0.5px; color: var(--text-muted); transition: all 0.3s ease; }
+.skill-tags span:hover { border-color: var(--text-color); color: var(--text-color); background: rgba(255, 255, 255, 0.05); }
+
+/* Timeline Section */
+.timeline { position: relative; }
+.timeline-item { margin-bottom: 3rem; padding-left: 2rem; border-left: 1px solid rgba(255, 255, 255, 0.1); position: relative; }
+.timeline-item::before { content: ''; position: absolute; left: -6px; top: 5px; width: 11px; height: 11px; border-radius: 50%; background: var(--text-muted); }
+.timeline-date { display: block; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 0.5rem; }
+.timeline-item h3 { font-family: var(--font-heading); font-size: 1.5rem; margin-bottom: 0.5rem; }
+.timeline-item p { font-size: 1rem; }
+
+.reveal-el { opacity: 0; transform: translateY(50px); }
+
+/* ==========================================================================
+   HORIZONTAL SCROLL (Selected Works)
+   ========================================================================== */
+.horizontal-section { height: 100vh; overflow: hidden; }
+.horizontal-track { display: flex; height: 100%; width: max-content; padding-left: 5vw; align-items: center; }
+.track-item { height: 65vh; margin-right: 6vw; display: flex; flex-direction: column; justify-content: center; }
+
+.intro-card { width: 300px; }
+.intro-card h2 { font-family: var(--font-heading); font-size: 4rem; line-height: 1.1; margin-bottom: 1.5rem; }
+.intro-card p { color: var(--text-muted); font-size: 1.1rem; line-height: 1.5; }
+
+.project-card { width: 45vw; position: relative; }
+.project-img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; filter: brightness(0.5); transition: filter 0.4s ease; }
+.project-card:hover .project-img { filter: brightness(0.8); }
+
+.project-info { position: absolute; bottom: 2rem; left: 2rem; right: 2rem; pointer-events: none; }
+.project-info h3 { font-family: var(--font-heading); font-size: 2.5rem; margin-bottom: 0.5rem; text-shadow: 0 4px 10px rgba(0,0,0,0.8); }
+.project-desc { font-size: 1rem; color: rgba(255, 255, 255, 0.9); margin-bottom: 1.5rem; max-width: 90%; line-height: 1.5; text-shadow: 0 2px 8px rgba(0,0,0,0.8); }
+
+.project-tags { display: flex; gap: 10px; }
+.project-tags span { font-size: 0.75rem; padding: 6px 14px; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 20px; text-transform: uppercase; letter-spacing: 1px; backdrop-filter: blur(4px); }
+
+/* ==========================================================================
+   FOOTER (Massive Name CTA)
+   ========================================================================== */
+.footer-section { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; }
+.footer-content-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.footer-section h2 { color: var(--text-muted); font-size: 1.2rem; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 2px; }
+
+.big-cta { font-family: var(--font-heading); font-size: clamp(3rem, 10vw, 10rem); line-height: 1; font-weight: 800; color: var(--text-color); text-decoration: none; display: block; text-align: center; margin-bottom: 1.5rem; transition: color 0.3s ease; }
+.big-cta:hover { color: transparent; -webkit-text-stroke: 2px var(--text-color); }
+
+.email-subtext { font-size: 1.2rem; color: var(--text-color); text-decoration: none; border-bottom: 1px solid rgba(255, 255, 255, 0.3); padding-bottom: 4px; transition: border-color 0.3s ease; }
+.email-subtext:hover { border-color: var(--text-color); }
+.footer-copy { position: absolute; bottom: 3rem; color: var(--text-muted); font-size: 0.9rem; }
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .nav-links { display: none; }
+    .bio-flex { flex-direction: column-reverse; } 
+    .bio-left, .bio-right, .bio-flex.is-shrunk .bio-left, .bio-flex.is-shrunk .bio-right { width: 100%; }
+    .portrait-sticky { position: relative; top: 0; height: 60vh; margin-bottom: 2rem; }
+    .bio-step { min-height: auto; padding: 4rem 0; }
+    .project-card { width: 85vw; }
+}
